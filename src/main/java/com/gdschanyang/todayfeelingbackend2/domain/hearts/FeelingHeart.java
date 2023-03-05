@@ -2,8 +2,10 @@ package com.gdschanyang.todayfeelingbackend2.domain.hearts;
 
 import com.gdschanyang.todayfeelingbackend2.domain.posts.FeelingPost;
 import com.gdschanyang.todayfeelingbackend2.domain.user.User;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -28,17 +30,12 @@ public class FeelingHeart {
     @JoinColumn(name = "FEELING_POST_ID")
     private FeelingPost feelingPost;
 
-    public void setUser(User user){
-        this.user  = user;
-        if(!user.getFeelingHearts().contains(this)){
-            user.getFeelingHearts().add(this);
-        }
-    }
+    @Builder
+    public FeelingHeart(User user, FeelingPost feelingPost) {
+        Assert.notNull(user, "user must not be null");
+        Assert.notNull(feelingPost, "feelingPost must not be null");
 
-    public void setFeelingPost(FeelingPost feelingPost){
+        this.user = user;
         this.feelingPost = feelingPost;
-        if(!feelingPost.getFeelingHearts().contains(this)){
-            feelingPost.getFeelingHearts().add(this);
-        }
     }
 }

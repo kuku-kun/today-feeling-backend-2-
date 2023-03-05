@@ -2,11 +2,16 @@ package com.gdschanyang.todayfeelingbackend2.domain.hearts;
 
 import com.gdschanyang.todayfeelingbackend2.domain.posts.ClinicPost;
 import com.gdschanyang.todayfeelingbackend2.domain.user.User;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
+@Getter
+@NoArgsConstructor
+@Entity
 public class ClinicHeart{
     // 클리닉 공감
     // 공감 유저, 공감한 클리닉 글 -> 일대다 단방향 맵핑
@@ -25,18 +30,12 @@ public class ClinicHeart{
     @JoinColumn(name = "CLINIC_POST_ID")
     private ClinicPost clinicPost;
 
-    public void setUser(User user){
+    @Builder
+    public ClinicHeart(User user, ClinicPost clinicPost) {
+        Assert.notNull(user, "user must not be null");
+        Assert.notNull(clinicPost, "clinicPost must not be null");
         this.user = user;
-        if(!user.getClinicHearts().contains(this)){
-            user.getClinicHearts().add(this);
-        }
-    }
-
-    public void setClinicPost(ClinicPost clinicPost){
         this.clinicPost = clinicPost;
-        if(!clinicPost.getClinicHearts().contains(this)){
-            clinicPost.getClinicHearts().add(this);
-        }
     }
 
 

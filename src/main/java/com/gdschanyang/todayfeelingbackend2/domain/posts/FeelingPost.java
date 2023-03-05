@@ -1,9 +1,12 @@
 package com.gdschanyang.todayfeelingbackend2.domain.posts;
 
+import com.gdschanyang.todayfeelingbackend2.domain.BaseTimeEntity;
 import com.gdschanyang.todayfeelingbackend2.domain.hearts.FeelingHeart;
 import com.gdschanyang.todayfeelingbackend2.domain.user.User;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,7 +15,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-public class FeelingPost {
+public class FeelingPost extends BaseTimeEntity {
     // 감정글
     // 감정, 글, 저자, 삭제여부
     @Id
@@ -40,17 +43,14 @@ public class FeelingPost {
     @OneToMany(mappedBy = "feelingPost")
     private List<FeelingHeart> feelingHearts = new ArrayList<FeelingHeart>();
 
-    public void setUser(User user){
+    @Builder
+    public FeelingPost( Feeling feeling, String content, Boolean del,
+                        User user, List<FeelingHeart> feelingHearts) {
+        this.feeling = feeling;
+        this.content = content;
+        this.del = del;
         this.user = user;
-        if(!user.getFeelingPosts().contains(this)){
-            user.getFeelingPosts().add(this);
-        }
+        this.feelingHearts = feelingHearts;
     }
 
-    public void addFeelingPost(FeelingHeart feelingHeart){
-        this.feelingHearts.add(feelingHeart);
-        if(feelingHeart.getFeelingPost() != this){
-            feelingHeart.setFeelingPost(this);
-        }
-    }
 }

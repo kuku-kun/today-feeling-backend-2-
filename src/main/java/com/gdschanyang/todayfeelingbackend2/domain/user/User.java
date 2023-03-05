@@ -4,8 +4,10 @@ import com.gdschanyang.todayfeelingbackend2.domain.hearts.ClinicHeart;
 import com.gdschanyang.todayfeelingbackend2.domain.hearts.FeelingHeart;
 import com.gdschanyang.todayfeelingbackend2.domain.posts.ClinicPost;
 import com.gdschanyang.todayfeelingbackend2.domain.posts.FeelingPost;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -40,30 +42,19 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<ClinicHeart> clinicHearts = new ArrayList<ClinicHeart>();
 
-    public void addFeelingPost(FeelingPost feelingPost){
-        this.feelingPosts.add(feelingPost);
-        if(feelingPost.getUser() != this){
-            feelingPost.getUser();
-        }
-    }
-    public void addFeelingHeart(FeelingHeart feelingHeart){
-        this.feelingHearts.add(feelingHeart);
-        if(feelingHeart.getUser() != this){
-            feelingHeart.setUser(this);
-        }
-    }
+    @Builder
+    public User(String name,
+                List<FeelingPost> feelingPosts, List<FeelingHeart> feelingHearts,
+                List<ClinicPost> clinicPosts, List<ClinicHeart> clinicHearts){
+        this.name = name;
 
-    public void addClinicPost(ClinicPost clinicPost){
-        this.clinicPosts.add((clinicPost));
-        if(clinicPost.getUser() != this){
-            clinicPost.setUser(this);
-        }
-    }
-
-    public void addClinicHeart(ClinicHeart clinicHeart){
-        this.clinicHearts.add((clinicHeart));
-        if(clinicHeart.getClinicHeart() != this){
-            clinicHeart.setUser(this);
-        }
+        Assert.notNull(feelingPosts,"feelingPost must not be null");
+        Assert.notNull(feelingHearts, "feelingHeart must not be null");
+        Assert.notNull(clinicPosts,"clinicPost must not be null");
+        Assert.notNull(clinicHearts, "clinicHeart must not be null");
+        this.feelingPosts = feelingPosts;
+        this.feelingHearts = feelingHearts;
+        this.clinicPosts = clinicPosts;
+        this.clinicHearts = clinicHearts;
     }
 }
