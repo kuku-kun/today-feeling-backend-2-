@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ClinicPostRepository extends JpaRepository<ClinicPost, Long> {
-    // 클리닉 센터 글쓰기 기능
+    // 클리닉 센터 글쓰기 기능 처리 CRUD
 
     // 글 저장
 
